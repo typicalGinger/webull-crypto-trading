@@ -8,7 +8,7 @@ import time
 import json
 import talib._ta_lib as ta
 
-symbol = 'BTCUSD'
+symbol = 'BTC/USD'
 period = None
 timeframe = None
 hist = []

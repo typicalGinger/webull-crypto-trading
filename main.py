@@ -16,6 +16,8 @@ new_hist = []
 wb = webull()
 f = None
 loginInfo = None
+webullpassword = open('C:\\Account IDs\\email.txt', 'r').read()
+email = open('C:\\Account IDs\\webullpassword.txt', 'r').read()
 
 def login():
     print("Logging in to WeBull...")
@@ -27,15 +29,15 @@ def login():
         print("First time login.")
     #If first time save login as token
     if not loginInfo:
-        wb.get_mfa('mattaswm@gmail.com') #mobile number should be okay as well.
+        wb.get_mfa(email) #mobile number should be okay as well.
         code = input('Enter MFA Code : ')
-        loginInfo = wb.login('mattaswm@gmail.com', '6abRuDsJ36!', 'My Device', code)
+        loginInfo = wb.login(email, webullpassword, 'My Device', code)
         f = open("C:\\Account IDs\\webulltoken.txt", "w")
         f.write(json.dumps(loginInfo))
         f.close()
     else:
         wb.refresh_login()
-        loginInfo = wb.login('mattaswm@gmail.com', '6abRuDsJ36!')
+        loginInfo = wb.login(email, webullpassword)
     print('Logged In!')
     return loginInfo
 

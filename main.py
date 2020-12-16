@@ -8,7 +8,7 @@ import time
 import json
 import talib._ta_lib as ta
 
-symbol = 'BTC/USD'
+symbol = 'BTCUSD'
 period = None
 timeframe = None
 hist = []
@@ -16,10 +16,13 @@ new_hist = []
 wb = webull()
 f = None
 loginInfo = None
-webullpassword = open('C:\\Account IDs\\email.txt', 'r').read()
-email = open('C:\\Account IDs\\webullpassword.txt', 'r').read()
+email = open('C:\\Account IDs\\email.txt', 'r').read()
+webullpassword = open('C:\\Account IDs\\webullpassword.txt', 'r').read()
+phone = '+1-6207578055'
 
 def login():
+    global loginInfo
+    print(webullpassword)
     print("Logging in to WeBull...")
     #login to Webull
     try:
@@ -43,9 +46,9 @@ def login():
 
 def get_data():
     tickerID = wb.get_ticker(symbol)
-    print(tickerID)
-    print('ok')
-    hist = wb.get_bars(stock=symbol.upper(), interval='m1', count=20)
+    #print(tickerID)
+    #print('ok')
+    hist = wb.get_bars(stock=symbol.upper(), interval='m1', count=50)
     hist = pd.DataFrame(hist)
     calc_ema(hist)
     return hist
@@ -84,7 +87,10 @@ def buy_sell_calc(self, dataframe, ticker):
 def main():
     loginInfo = login()
     hist = get_data()
+    #print(hist)
+    #hist.to_csv('C:\\Users\\matta\\Documents\\binance-crypto-trading\\binance-crypto-trading\\btcusdt_data.csv')
     conn = StreamConn(debug_flg=False)
+    print(loginInfo)
     if not loginInfo['accessToken'] is None and len(loginInfo['accessToken']) > 1:
         conn.connect(loginInfo['uuid'], access_token=loginInfo['accessToken'])
     else:
@@ -104,7 +110,7 @@ def main():
             if len(hist) > 25:
                 hist = hist.drop(hist.index[0])
             print(hist)
-            print(wb.get_positions())
+            #print(wb.get_positions())
             time.sleep(60)
         except Exception as e:
             print(f'Error: {str(e)}')
